@@ -1,11 +1,12 @@
 // @vitest-environment jsdom
 
 import { useState } from "react";
-import { useResource, type Ref } from "../index.js";
+import { expect } from "vitest";
+
+import { type Ref, useResource } from "../index.js";
 import { html, react } from "./dom.js";
 import { entryPoint } from "./entry.js";
 import { testModes } from "./modes.js";
-import { expect } from "vitest";
 
 testModes("useResource", (mode) => {
   TestResource.resetId();
@@ -15,7 +16,7 @@ testModes("useResource", (mode) => {
       const [count, setCount] = useState(0);
 
       const resource = useResource
-        .with({ count })
+        .withState({ count })
         .create(({ count }) => TestResource.initial(count))
         .update((resource, { count }) => resource.transition("updated", count))
         .on({
@@ -73,7 +74,7 @@ testModes("useResource (nested)", (mode) => {
       const [count, setCount] = useState(0);
 
       const resource = useResource
-        .with({ count })
+        .withState({ count })
         .create(({ count }) => TestResource.initial(count))
         .update((resource, { count }) => resource.transition("updated", count))
         .on({
@@ -135,7 +136,7 @@ testModes("useResource (nested, stability across remounting)", (mode) => {
       const [count, setCount] = useState(0);
 
       const resource = useResource
-        .with({ count })
+        .withState({ count })
         .create(({ count }) => TestResource.initial(count))
         .update((resource, { count }) => resource.transition("updated", count))
         .on({
